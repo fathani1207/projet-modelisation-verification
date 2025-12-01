@@ -3,9 +3,13 @@ Système de Gestion d’un Parking Intelligent
 
 
 ## Réalisé par
-- **FATHANI Youssef**
 - **BEN HAMMICH Salaheddin**
+- **FATHANI Youssef**
 
+---
+## Rapport du Projet
+Rapport complet disponible ici :  
+https://docs.google.com/document/d/1nb9_BG2EodFGI6ycWi3rvVzha0j2Oc-SWxVYRc3nd1E/edit?usp=sharing
 ---
 
 ## Description du Projet
@@ -27,9 +31,6 @@ L’objectif est de garantir la **cohérence**, la **sécurité** et le **respec
 ## Technologies & Outils
 - **UPPAAL** (automates temporisés, vérification CTL)
 
----
-## Rapport du Projet
-Rapport complet disponible ici :  
-https://docs.google.com/document/d/1nb9_BG2EodFGI6ycWi3rvVzha0j2Oc-SWxVYRc3nd1E/edit?usp=sharing
+
 
 
