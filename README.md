@@ -1,4 +1,4 @@
-# Projet de Modélisation & Vérification
+# Projet de Modélisation et Vérification Algorithmique
 Système de Gestion d’un Parking Intelligent  
 
 
@@ -31,4 +31,5 @@ L’objectif est de garantir la **cohérence**, la **sécurité** et le **respec
 ## Rapport du Projet
 Rapport complet disponible ici :  
 https://docs.google.com/document/d/1nb9_BG2EodFGI6ycWi3rvVzha0j2Oc-SWxVYRc3nd1E/edit?usp=sharing
+
 
