@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>// déclaration des variables constantes
+const int DUREE_STATIONNEMENT = 60;
+const int DUREE_ATTENTE = 15;
+const int MAX_PLACE = 5;
+const int MAX_PERSONNE = 5;
+
+
+// declaration des variables utilisables globalement dans le projet
+bool porte_ouverte = false;
+int places_libres = MAX_PLACE;
+bool place_occupee[MAX_PLACE];
+int place_personne[MAX_PLACE];
+int place_attribuee = -1;
+int personne_qui_part = -1;
+
+
+// déclaration des canneaux de communication et synchronisation
+chan notifier[MAX_PERSONNE];
+chan prolonger[MAX_PERSONNE];
+broadcast chan depannage[MAX_PLACE];
+broadcast chan depannage_fini[MAX_PLACE];
+broadcast chan entrer;
+broadcast chan refus;
+broadcast chan accepter;
+broadcast chan occuper[MAX_PLACE];
+broadcast chan partir;
+chan sortir[MAX_PERSONNE];
+chan dehors;
+
+
+// trouver une place
+int trouver_place_libre(){
+    int i;
+    for(i = 0; i &lt; MAX_PLACE; i++){
+        if(!place_occupee[i]){
+            return i;
+        }
+    }
+    return -1;
+}
+
+// occuper une place
+void occuper_place(int place_id, int personne_id){
+    place_occupee[place_id] = true;
+    place_personne[place_id] = personne_id;
+    places_libres--;
+    if (places_libres == 0){
+        porte_ouverte = false;
+    }
+}
+
+// trouver qui occupe une place
+int trouver_personne_occupe(int place_id){
+    if(place_occupee[place_id]){
+        return place_personne[place_id];
+    }
+    return -1;
+}
+
+// librer une place
+void liberer_place(int place_id){
+    place_occupee[place_id] = false;
+    place_personne[place_id] = -1;
+    places_libres++;
+}
+</declaration>
+	<template>
+		<name>Depannage</name>
+		<parameter>const int place_id</parameter>
+		<location id="id0" x="-578" y="-68">
+			<name x="-680" y="-102">Disponible</name>
+		</location>
+		<location id="id1" x="-272" y="-68">
+			<name x="-246" y="-93">Intervention</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id2">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-527" y="76">depannage_fini[place_id]!</label>
+			<nail x="-272" y="102"/>
+			<nail x="-272" y="102"/>
+			<nail x="-578" y="102"/>
+		</transition>
+		<transition id="id3">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-544" y="-297">depannage[place_id]?</label>
+			<nail x="-578" y="-272"/>
+			<nail x="-272" y="-272"/>
+		</transition>
+	</template>
+	<template>
+		<name>Gestionnaire_Place</name>
+		<location id="id4" x="-646" y="0">
+			<name x="-722" y="-34">Attente</name>
+		</location>
+		<location id="id5" x="-272" y="0">
+			<name x="-246" y="-8">Attribution</name>
+			<committed/>
+		</location>
+		<init ref="id4"/>
+		<transition id="id6">
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-578" y="-25">place_attribuee &lt; 0</label>
+			<label kind="synchronisation" x="-578" y="-42">refus!</label>
+		</transition>
+		<transition id="id7">
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-578" y="110">place_attribuee &gt;= 0</label>
+			<label kind="synchronisation" x="-578" y="93">accepter!</label>
+			<nail x="-272" y="136"/>
+			<nail x="-646" y="136"/>
+		</transition>
+		<transition id="id8">
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-620" y="-161">entrer?</label>
+			<label kind="assignment" x="-620" y="-127">place_attribuee = trouver_place_libre()</label>
+			<nail x="-646" y="-136"/>
+			<nail x="-272" y="-136"/>
+		</transition>
+	</template>
+	<template>
+		<name>Gestionnaire_Parking</name>
+		<declaration>int place_id;</declaration>
+		<location id="id9" x="-340" y="0">
+			<name x="-442" y="-17">Fermee</name>
+			<label kind="invariant" x="-544" y="8">porte_ouverte == false</label>
+		</location>
+		<location id="id10" x="136" y="0">
+			<name x="153" y="-25">Ouvert</name>
+			<label kind="invariant" x="153" y="-8">porte_ouverte == true</label>
+		</location>
+		<location id="id11" x="-136" y="-238">
+			<name x="-146" y="-272">Verification</name>
+			<committed/>
+		</location>
+		<location id="id12" x="-136" y="170">
+			<name x="-178" y="136">Partir</name>
+			<committed/>
+		</location>
+		<init ref="id9"/>
+		<transition id="id13">
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-195" y="42">dehors?</label>
+			<label kind="assignment" x="-195" y="59">porte_ouverte = false</label>
+			<nail x="102" y="85"/>
+			<nail x="-306" y="85"/>
+		</transition>
+		<transition id="id14">
+			<source ref="id11"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-127" y="-144">refus?</label>
+			<label kind="assignment" x="-127" y="-127">porte_ouverte = false</label>
+			<nail x="-136" y="0"/>
+		</transition>
+		<transition id="id15">
+			<source ref="id12"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-93" y="144">sortir[personne_qui_part]!</label>
+			<label kind="assignment" x="-93" y="127">porte_ouverte = true</label>
+			<nail x="136" y="170"/>
+		</transition>
+		<transition id="id16">
+			<source ref="id9"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-314" y="144">partir?</label>
+			<nail x="-340" y="170"/>
+		</transition>
+		<transition id="id17">
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-85" y="-25">occuper[place_id]?</label>
+			<label kind="assignment" x="-85" y="-42">porte_ouverte = false</label>
+			<nail x="-136" y="0"/>
+		</transition>
+		<transition id="id18">
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="153" y="-187">accepter?</label>
+			<label kind="assignment" x="153" y="-170">porte_ouverte = true,
+place_id = place_attribuee</label>
+			<nail x="136" y="-238"/>
+		</transition>
+		<transition id="id19">
+			<source ref="id9"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-306" y="-263">entrer?</label>
+			<nail x="-340" y="-238"/>
+		</transition>
+	</template>
+	<template>
+		<name>Personne</name>
+		<parameter>const int personne_id</parameter>
+		<declaration>int place_id;</declaration>
+		<location id="id20" x="-748" y="0">
+			<name x="-816" y="-34">Dehors</name>
+		</location>
+		<location id="id21" x="-510" y="0">
+			<name x="-520" y="-34">Demande_Entree</name>
+		</location>
+		<location id="id22" x="102" y="0">
+			<name x="25" y="-42">Stationne</name>
+		</location>
+		<location id="id23" x="374" y="0">
+			<name x="382" y="-34">Notification_Recue</name>
+		</location>
+		<location id="id24" x="-68" y="204">
+			<name x="-85" y="221">Partir</name>
+			<committed/>
+		</location>
+		<location id="id25" x="579" y="153">
+			<name x="603" y="144">Depannage</name>
+			<committed/>
+		</location>
+		<location id="id26" x="-229" y="0">
+			<name x="-239" y="-34">Attribution_Place</name>
+			<committed/>
+		</location>
+		<location id="id27" x="-510" y="-204">
+			<name x="-520" y="-238">Refus</name>
+			<committed/>
+		</location>
+		<location id="id28" x="-408" y="204">
+			<name x="-450" y="170">Attente_Porte</name>
+			<committed/>
+		</location>
+		<location id="id29" x="204" y="204">
+			<name x="136" y="229">Preparation_Sortie</name>
+			<committed/>
+		</location>
+		<init ref="id20"/>
+		<transition id="id30">
+			<source ref="id29"/>
+			<target ref="id24"/>
+			<label kind="synchronisation" x="17" y="178">partir!</label>
+		</transition>
+		<transition id="id31">
+			<source ref="id23"/>
+			<target ref="id29"/>
+			<label kind="guard" x="297" y="93">personne_qui_part == -1</label>
+			<label kind="assignment" x="297" y="110">personne_qui_part = personne_id</label>
+			<nail x="374" y="204"/>
+		</transition>
+		<transition id="id32">
+			<source ref="id22"/>
+			<target ref="id29"/>
+			<label kind="guard" x="-59" y="85">personne_qui_part == -1</label>
+			<label kind="assignment" x="-59" y="102">personne_qui_part = personne_id</label>
+			<nail x="204" y="0"/>
+		</transition>
+		<transition id="id33">
+			<source ref="id28"/>
+			<target ref="id20"/>
+			<label kind="synchronisation" x="-722" y="136">dehors!</label>
+			<label kind="assignment" x="-731" y="161">liberer_place(place_id),
+personne_qui_part = -1</label>
+			<nail x="-748" y="204"/>
+			<nail x="-748" y="204"/>
+		</transition>
+		<transition id="id34">
+			<source ref="id24"/>
+			<target ref="id28"/>
+			<label kind="synchronisation" x="-314" y="178">sortir[personne_id]?</label>
+		</transition>
+		<transition id="id35">
+			<source ref="id27"/>
+			<target ref="id20"/>
+			<nail x="-748" y="-204"/>
+		</transition>
+		<transition id="id36">
+			<source ref="id21"/>
+			<target ref="id27"/>
+			<label kind="synchronisation" x="-501" y="-119">refus?</label>
+		</transition>
+		<transition id="id37">
+			<source ref="id25"/>
+			<target ref="id20"/>
+			<label kind="synchronisation" x="-833" y="280">depannage_fini[place_id]?</label>
+			<label kind="assignment" x="-833" y="297">liberer_place(place_id)</label>
+			<nail x="579" y="272"/>
+			<nail x="-850" y="272"/>
+			<nail x="-850" y="0"/>
+			<nail x="-850" y="0"/>
+		</transition>
+		<transition id="id38">
+			<source ref="id23"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="586" y="34">depannage[place_id]?</label>
+			<nail x="579" y="0"/>
+		</transition>
+		<transition id="id39">
+			<source ref="id23"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="170" y="-170">prolonger[personne_id]!</label>
+			<nail x="374" y="-136"/>
+			<nail x="102" y="-136"/>
+		</transition>
+		<transition id="id40">
+			<source ref="id22"/>
+			<target ref="id23"/>
+			<label kind="synchronisation" x="153" y="-25">notifier[personne_id]?</label>
+		</transition>
+		<transition id="id41">
+			<source ref="id26"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="-212" y="25">occuper[place_id]!</label>
+			<label kind="assignment" x="-212" y="8">occuper_place(place_id,personne_id)</label>
+		</transition>
+		<transition id="id42">
+			<source ref="id21"/>
+			<target ref="id26"/>
+			<label kind="synchronisation" x="-476" y="25">accepter?</label>
+			<label kind="assignment" x="-476" y="8">place_id = place_attribuee</label>
+		</transition>
+		<transition id="id43">
+			<source ref="id20"/>
+			<target ref="id21"/>
+			<label kind="synchronisation" x="-654" y="-25">entrer!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Place</name>
+		<parameter>const int place_id</parameter>
+		<declaration>clock temps_stationnement;
+clock temps_attente;
+int personne_id = -1;</declaration>
+		<location id="id44" x="-646" y="0">
+			<name x="-714" y="-17">Libre</name>
+		</location>
+		<location id="id45" x="-170" y="0">
+			<name x="-195" y="17">Occupe</name>
+			<label kind="invariant" x="-229" y="42">temps_stationnement &lt;=
+DUREE_STATIONNEMENT</label>
+		</location>
+		<location id="id46" x="170" y="0">
+			<name x="110" y="-34">Notification_Envoie</name>
+			<label kind="invariant" x="110" y="25">temps_attente &lt;=
+DUREE_ATTENTE</label>
+		</location>
+		<location id="id47" x="510" y="0">
+			<name x="500" y="-34">Depannage</name>
+			<committed/>
+		</location>
+		<init ref="id44"/>
+		<transition id="id48">
+			<source ref="id45"/>
+			<target ref="id44"/>
+			<label kind="guard" x="-544" y="-161">personne_qui_part == personne_id</label>
+			<label kind="synchronisation" x="-544" y="-178">partir?</label>
+			<nail x="-170" y="-136"/>
+			<nail x="-170" y="-136"/>
+			<nail x="-646" y="-136"/>
+		</transition>
+		<transition id="id49">
+			<source ref="id46"/>
+			<target ref="id44"/>
+			<label kind="guard" x="-374" y="110">personne_qui_part == personne_id</label>
+			<label kind="synchronisation" x="-374" y="93">partir?</label>
+			<nail x="170" y="136"/>
+			<nail x="-646" y="136"/>
+		</transition>
+		<transition id="id50">
+			<source ref="id47"/>
+			<target ref="id44"/>
+			<label kind="synchronisation" x="-586" y="178">depannage_fini[place_id]?</label>
+			<nail x="510" y="204"/>
+			<nail x="-646" y="204"/>
+		</transition>
+		<transition id="id51">
+			<source ref="id46"/>
+			<target ref="id47"/>
+			<label kind="guard" x="289" y="-68">temps_attente &gt;
+DUREE_ATTENTE</label>
+			<label kind="synchronisation" x="289" y="-26">depannage[place_id]!</label>
+		</transition>
+		<transition id="id52">
+			<source ref="id46"/>
+			<target ref="id45"/>
+			<label kind="synchronisation" x="-93" y="-161">prolonger[personne_id]?</label>
+			<nail x="170" y="-136"/>
+			<nail x="-170" y="-136"/>
+			<nail x="-170" y="-136"/>
+		</transition>
+		<transition id="id53">
+			<source ref="id45"/>
+			<target ref="id46"/>
+			<label kind="guard" x="-119" y="-84">temps_stationnement &gt;
+DUREE_STATIONNEMENT</label>
+			<label kind="synchronisation" x="-119" y="-25">notifier[personne_id]!</label>
+			<label kind="assignment" x="-119" y="-42">temps_attente = 0</label>
+		</transition>
+		<transition id="id54">
+			<source ref="id44"/>
+			<target ref="id45"/>
+			<label kind="synchronisation" x="-612" y="-76">occuper[place_id]?</label>
+			<label kind="assignment" x="-612" y="-59">temps_stationnement = 0,
+personne_id = trouver_personne_occupe(place_id)</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+
+personne0 = Personne(0);
+personne1 = Personne(1);
+personne2 = Personne(2);
+place0 = Place(0);
+place1 = Place(1);
+place2 = Place(2);
+place3 = Place(3);
+depannage0 = Depannage(0);
+depannage1 = Depannage(1);
+depannage2 = Depannage(2);
+depannage3 = Depannage(3);
+gestionnaire = Gestionnaire_Place();
+porte = Gestionnaire_Parking();
+
+// List one or more processes to be composed into a system.
+system personne0, personne1, personne2, place0, place1, place2, place3, porte, gestionnaire, depannage0, depannage1, depannage2, depannage3;
+</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-11-30 20:40:08 +0100">
+			</result>
+		</query>
+	</queries>
+</nta>
