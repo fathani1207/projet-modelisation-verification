@@ -4,8 +4,8 @@
 	<declaration>// déclaration des variables constantes
 const int DUREE_STATIONNEMENT = 60;
 const int DUREE_ATTENTE = 15;
-const int MAX_PLACE = 5;
-const int MAX_PERSONNE = 5;
+const int MAX_PLACE = 3;
+const int MAX_PERSONNE = 4;
 
 
 // declaration des variables utilisables globalement dans le projet
@@ -95,35 +95,35 @@ void liberer_place(int place_id){
 	</template>
 	<template>
 		<name>Gestionnaire_Place</name>
-		<location id="id4" x="-646" y="0">
-			<name x="-722" y="-34">Attente</name>
+		<location id="id4" x="-680" y="-586">
+			<name x="-756" y="-620">Attente</name>
 		</location>
-		<location id="id5" x="-272" y="0">
-			<name x="-246" y="-8">Attribution</name>
+		<location id="id5" x="-306" y="-586">
+			<name x="-280" y="-594">Attribution</name>
 			<committed/>
 		</location>
 		<init ref="id4"/>
 		<transition id="id6">
 			<source ref="id5"/>
 			<target ref="id4"/>
-			<label kind="guard" x="-578" y="-25">place_attribuee &lt; 0</label>
-			<label kind="synchronisation" x="-578" y="-42">refus!</label>
+			<label kind="guard" x="-612" y="-611">place_attribuee &lt; 0</label>
+			<label kind="synchronisation" x="-612" y="-628">refus!</label>
 		</transition>
 		<transition id="id7">
 			<source ref="id5"/>
 			<target ref="id4"/>
-			<label kind="guard" x="-578" y="110">place_attribuee &gt;= 0</label>
-			<label kind="synchronisation" x="-578" y="93">accepter!</label>
-			<nail x="-272" y="136"/>
-			<nail x="-646" y="136"/>
+			<label kind="guard" x="-612" y="-476">place_attribuee &gt;= 0</label>
+			<label kind="synchronisation" x="-612" y="-493">accepter!</label>
+			<nail x="-306" y="-450"/>
+			<nail x="-680" y="-450"/>
 		</transition>
 		<transition id="id8">
 			<source ref="id4"/>
 			<target ref="id5"/>
-			<label kind="synchronisation" x="-620" y="-161">entrer?</label>
-			<label kind="assignment" x="-620" y="-127">place_attribuee = trouver_place_libre()</label>
-			<nail x="-646" y="-136"/>
-			<nail x="-272" y="-136"/>
+			<label kind="synchronisation" x="-654" y="-747">entrer?</label>
+			<label kind="assignment" x="-654" y="-713">place_attribuee = trouver_place_libre()</label>
+			<nail x="-680" y="-722"/>
+			<nail x="-306" y="-722"/>
 		</transition>
 	</template>
 	<template>
@@ -200,130 +200,130 @@ place_id = place_attribuee</label>
 		<name>Personne</name>
 		<parameter>const int personne_id</parameter>
 		<declaration>int place_id;</declaration>
-		<location id="id20" x="-748" y="0">
-			<name x="-816" y="-34">Dehors</name>
+		<location id="id20" x="-791" y="-8">
+			<name x="-859" y="-42">Dehors</name>
 		</location>
-		<location id="id21" x="-510" y="0">
-			<name x="-520" y="-34">Demande_Entree</name>
+		<location id="id21" x="-553" y="-8">
+			<name x="-563" y="-42">Demande_Entree</name>
 		</location>
-		<location id="id22" x="102" y="0">
-			<name x="25" y="-42">Stationne</name>
+		<location id="id22" x="59" y="-8">
+			<name x="-18" y="-50">Stationne</name>
 		</location>
-		<location id="id23" x="374" y="0">
-			<name x="382" y="-34">Notification_Recue</name>
+		<location id="id23" x="331" y="-8">
+			<name x="339" y="-42">Notification_Recue</name>
 		</location>
-		<location id="id24" x="-68" y="204">
-			<name x="-85" y="221">Partir</name>
+		<location id="id24" x="-111" y="196">
+			<name x="-128" y="213">Partir</name>
 			<committed/>
 		</location>
-		<location id="id25" x="579" y="153">
-			<name x="603" y="144">Depannage</name>
+		<location id="id25" x="536" y="145">
+			<name x="560" y="136">Depannage</name>
 			<committed/>
 		</location>
-		<location id="id26" x="-229" y="0">
-			<name x="-239" y="-34">Attribution_Place</name>
+		<location id="id26" x="-272" y="-8">
+			<name x="-282" y="-42">Attribution_Place</name>
 			<committed/>
 		</location>
-		<location id="id27" x="-510" y="-204">
-			<name x="-520" y="-238">Refus</name>
+		<location id="id27" x="-553" y="-212">
+			<name x="-563" y="-246">Refus</name>
 			<committed/>
 		</location>
-		<location id="id28" x="-408" y="204">
-			<name x="-450" y="170">Attente_Porte</name>
+		<location id="id28" x="-451" y="196">
+			<name x="-493" y="162">Attente_Porte</name>
 			<committed/>
 		</location>
-		<location id="id29" x="204" y="204">
-			<name x="136" y="229">Preparation_Sortie</name>
+		<location id="id29" x="161" y="196">
+			<name x="93" y="221">Preparation_Sortie</name>
 			<committed/>
 		</location>
 		<init ref="id20"/>
 		<transition id="id30">
 			<source ref="id29"/>
 			<target ref="id24"/>
-			<label kind="synchronisation" x="17" y="178">partir!</label>
+			<label kind="synchronisation" x="-26" y="170">partir!</label>
 		</transition>
 		<transition id="id31">
 			<source ref="id23"/>
 			<target ref="id29"/>
-			<label kind="guard" x="297" y="93">personne_qui_part == -1</label>
-			<label kind="assignment" x="297" y="110">personne_qui_part = personne_id</label>
-			<nail x="374" y="204"/>
+			<label kind="guard" x="254" y="85">personne_qui_part == -1</label>
+			<label kind="assignment" x="254" y="102">personne_qui_part = personne_id</label>
+			<nail x="331" y="196"/>
 		</transition>
 		<transition id="id32">
 			<source ref="id22"/>
 			<target ref="id29"/>
-			<label kind="guard" x="-59" y="85">personne_qui_part == -1</label>
-			<label kind="assignment" x="-59" y="102">personne_qui_part = personne_id</label>
-			<nail x="204" y="0"/>
+			<label kind="guard" x="-102" y="77">personne_qui_part == -1</label>
+			<label kind="assignment" x="-102" y="94">personne_qui_part = personne_id</label>
+			<nail x="161" y="-8"/>
 		</transition>
 		<transition id="id33">
 			<source ref="id28"/>
 			<target ref="id20"/>
-			<label kind="synchronisation" x="-722" y="136">dehors!</label>
-			<label kind="assignment" x="-731" y="161">liberer_place(place_id),
+			<label kind="synchronisation" x="-765" y="128">dehors!</label>
+			<label kind="assignment" x="-774" y="153">liberer_place(place_id),
 personne_qui_part = -1</label>
-			<nail x="-748" y="204"/>
-			<nail x="-748" y="204"/>
+			<nail x="-791" y="196"/>
+			<nail x="-791" y="196"/>
 		</transition>
 		<transition id="id34">
 			<source ref="id24"/>
 			<target ref="id28"/>
-			<label kind="synchronisation" x="-314" y="178">sortir[personne_id]?</label>
+			<label kind="synchronisation" x="-357" y="170">sortir[personne_id]?</label>
 		</transition>
 		<transition id="id35">
 			<source ref="id27"/>
 			<target ref="id20"/>
-			<nail x="-748" y="-204"/>
+			<nail x="-791" y="-212"/>
 		</transition>
 		<transition id="id36">
 			<source ref="id21"/>
 			<target ref="id27"/>
-			<label kind="synchronisation" x="-501" y="-119">refus?</label>
+			<label kind="synchronisation" x="-544" y="-127">refus?</label>
 		</transition>
 		<transition id="id37">
 			<source ref="id25"/>
 			<target ref="id20"/>
-			<label kind="synchronisation" x="-833" y="280">depannage_fini[place_id]?</label>
-			<label kind="assignment" x="-833" y="297">liberer_place(place_id)</label>
-			<nail x="579" y="272"/>
-			<nail x="-850" y="272"/>
-			<nail x="-850" y="0"/>
-			<nail x="-850" y="0"/>
+			<label kind="synchronisation" x="-876" y="272">depannage_fini[place_id]?</label>
+			<label kind="assignment" x="-876" y="289">liberer_place(place_id)</label>
+			<nail x="536" y="264"/>
+			<nail x="-893" y="264"/>
+			<nail x="-893" y="-8"/>
+			<nail x="-893" y="-8"/>
 		</transition>
 		<transition id="id38">
 			<source ref="id23"/>
 			<target ref="id25"/>
-			<label kind="synchronisation" x="586" y="34">depannage[place_id]?</label>
-			<nail x="579" y="0"/>
+			<label kind="synchronisation" x="543" y="26">depannage[place_id]?</label>
+			<nail x="536" y="-8"/>
 		</transition>
 		<transition id="id39">
 			<source ref="id23"/>
 			<target ref="id22"/>
-			<label kind="synchronisation" x="170" y="-170">prolonger[personne_id]!</label>
-			<nail x="374" y="-136"/>
-			<nail x="102" y="-136"/>
+			<label kind="synchronisation" x="127" y="-178">prolonger[personne_id]!</label>
+			<nail x="331" y="-144"/>
+			<nail x="59" y="-144"/>
 		</transition>
 		<transition id="id40">
 			<source ref="id22"/>
 			<target ref="id23"/>
-			<label kind="synchronisation" x="153" y="-25">notifier[personne_id]?</label>
+			<label kind="synchronisation" x="110" y="-33">notifier[personne_id]?</label>
 		</transition>
 		<transition id="id41">
 			<source ref="id26"/>
 			<target ref="id22"/>
-			<label kind="synchronisation" x="-212" y="25">occuper[place_id]!</label>
-			<label kind="assignment" x="-212" y="8">occuper_place(place_id,personne_id)</label>
+			<label kind="synchronisation" x="-255" y="17">occuper[place_id]!</label>
+			<label kind="assignment" x="-255" y="0">occuper_place(place_id,personne_id)</label>
 		</transition>
 		<transition id="id42">
 			<source ref="id21"/>
 			<target ref="id26"/>
-			<label kind="synchronisation" x="-476" y="25">accepter?</label>
-			<label kind="assignment" x="-476" y="8">place_id = place_attribuee</label>
+			<label kind="synchronisation" x="-519" y="17">accepter?</label>
+			<label kind="assignment" x="-519" y="0">place_id = place_attribuee</label>
 		</transition>
 		<transition id="id43">
 			<source ref="id20"/>
 			<target ref="id21"/>
-			<label kind="synchronisation" x="-654" y="-25">entrer!</label>
+			<label kind="synchronisation" x="-697" y="-33">entrer!</label>
 		</transition>
 	</template>
 	<template>
@@ -332,76 +332,76 @@ personne_qui_part = -1</label>
 		<declaration>clock temps_stationnement;
 clock temps_attente;
 int personne_id = -1;</declaration>
-		<location id="id44" x="-646" y="0">
-			<name x="-714" y="-17">Libre</name>
+		<location id="id44" x="-867" y="-510">
+			<name x="-935" y="-527">Libre</name>
 		</location>
-		<location id="id45" x="-170" y="0">
-			<name x="-195" y="17">Occupe</name>
-			<label kind="invariant" x="-229" y="42">temps_stationnement &lt;=
+		<location id="id45" x="-391" y="-510">
+			<name x="-416" y="-493">Occupe</name>
+			<label kind="invariant" x="-450" y="-468">temps_stationnement &lt;=
 DUREE_STATIONNEMENT</label>
 		</location>
-		<location id="id46" x="170" y="0">
-			<name x="110" y="-34">Notification_Envoie</name>
-			<label kind="invariant" x="110" y="25">temps_attente &lt;=
+		<location id="id46" x="-51" y="-510">
+			<name x="-111" y="-544">Notification_Envoie</name>
+			<label kind="invariant" x="-111" y="-485">temps_attente &lt;=
 DUREE_ATTENTE</label>
 		</location>
-		<location id="id47" x="510" y="0">
-			<name x="500" y="-34">Depannage</name>
+		<location id="id47" x="289" y="-510">
+			<name x="279" y="-544">Depannage</name>
 			<committed/>
 		</location>
 		<init ref="id44"/>
 		<transition id="id48">
 			<source ref="id45"/>
 			<target ref="id44"/>
-			<label kind="guard" x="-544" y="-161">personne_qui_part == personne_id</label>
-			<label kind="synchronisation" x="-544" y="-178">partir?</label>
-			<nail x="-170" y="-136"/>
-			<nail x="-170" y="-136"/>
-			<nail x="-646" y="-136"/>
+			<label kind="guard" x="-765" y="-671">personne_qui_part == personne_id</label>
+			<label kind="synchronisation" x="-765" y="-688">partir?</label>
+			<nail x="-391" y="-646"/>
+			<nail x="-391" y="-646"/>
+			<nail x="-867" y="-646"/>
 		</transition>
 		<transition id="id49">
 			<source ref="id46"/>
 			<target ref="id44"/>
-			<label kind="guard" x="-374" y="110">personne_qui_part == personne_id</label>
-			<label kind="synchronisation" x="-374" y="93">partir?</label>
-			<nail x="170" y="136"/>
-			<nail x="-646" y="136"/>
+			<label kind="guard" x="-595" y="-400">personne_qui_part == personne_id</label>
+			<label kind="synchronisation" x="-595" y="-417">partir?</label>
+			<nail x="-51" y="-374"/>
+			<nail x="-867" y="-374"/>
 		</transition>
 		<transition id="id50">
 			<source ref="id47"/>
 			<target ref="id44"/>
-			<label kind="synchronisation" x="-586" y="178">depannage_fini[place_id]?</label>
-			<nail x="510" y="204"/>
-			<nail x="-646" y="204"/>
+			<label kind="synchronisation" x="-807" y="-332">depannage_fini[place_id]?</label>
+			<nail x="289" y="-306"/>
+			<nail x="-867" y="-306"/>
 		</transition>
 		<transition id="id51">
 			<source ref="id46"/>
 			<target ref="id47"/>
-			<label kind="guard" x="289" y="-68">temps_attente &gt;
+			<label kind="guard" x="68" y="-578">temps_attente &gt;=
 DUREE_ATTENTE</label>
-			<label kind="synchronisation" x="289" y="-26">depannage[place_id]!</label>
+			<label kind="synchronisation" x="68" y="-536">depannage[place_id]!</label>
 		</transition>
 		<transition id="id52">
 			<source ref="id46"/>
 			<target ref="id45"/>
-			<label kind="synchronisation" x="-93" y="-161">prolonger[personne_id]?</label>
-			<nail x="170" y="-136"/>
-			<nail x="-170" y="-136"/>
-			<nail x="-170" y="-136"/>
+			<label kind="synchronisation" x="-314" y="-671">prolonger[personne_id]?</label>
+			<nail x="-51" y="-646"/>
+			<nail x="-391" y="-646"/>
+			<nail x="-391" y="-646"/>
 		</transition>
 		<transition id="id53">
 			<source ref="id45"/>
 			<target ref="id46"/>
-			<label kind="guard" x="-119" y="-84">temps_stationnement &gt;
+			<label kind="guard" x="-340" y="-594">temps_stationnement &gt;=
 DUREE_STATIONNEMENT</label>
-			<label kind="synchronisation" x="-119" y="-25">notifier[personne_id]!</label>
-			<label kind="assignment" x="-119" y="-42">temps_attente = 0</label>
+			<label kind="synchronisation" x="-340" y="-535">notifier[personne_id]!</label>
+			<label kind="assignment" x="-340" y="-552">temps_attente = 0</label>
 		</transition>
 		<transition id="id54">
 			<source ref="id44"/>
 			<target ref="id45"/>
-			<label kind="synchronisation" x="-612" y="-76">occuper[place_id]?</label>
-			<label kind="assignment" x="-612" y="-59">temps_stationnement = 0,
+			<label kind="synchronisation" x="-833" y="-586">occuper[place_id]?</label>
+			<label kind="assignment" x="-833" y="-569">temps_stationnement = 0,
 personne_id = trouver_personne_occupe(place_id)</label>
 		</transition>
 	</template>
@@ -411,25 +411,197 @@ personne_id = trouver_personne_occupe(place_id)</label>
 personne0 = Personne(0);
 personne1 = Personne(1);
 personne2 = Personne(2);
+personne3 = Personne(3);
+
 place0 = Place(0);
 place1 = Place(1);
 place2 = Place(2);
-place3 = Place(3);
+
 depannage0 = Depannage(0);
 depannage1 = Depannage(1);
 depannage2 = Depannage(2);
-depannage3 = Depannage(3);
+
 gestionnaire = Gestionnaire_Place();
 porte = Gestionnaire_Parking();
 
 // List one or more processes to be composed into a system.
-system personne0, personne1, personne2, place0, place1, place2, place3, porte, gestionnaire, depannage0, depannage1, depannage2, depannage3;
+system personne0, personne1, personne2, personne3, place0, place1, place2, porte, gestionnaire, depannage0, depannage1, depannage2;
 </system>
 	<queries>
 		<query>
 			<formula>A[] not deadlock</formula>
 			<comment/>
-			<result outcome="success" type="quality" timestamp="2025-11-30 20:40:08 +0100">
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:58:52 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; place0.Occupe</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:21:22 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; place1.Occupe</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:21:24 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; place2.Occupe</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:21:26 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (personne0.Dehors and personne0.Stationne)</formula>
+			<comment>la personne ne peut pas etre en dehors et a la fois en parking</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:19:38 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (place0.Libre and place0.Occupe)</formula>
+			<comment>place ne doit pas etre libre et occupée a la fois</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:30:30 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (places_libres == 0)  </formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:21:27 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] places_libres &gt;= 0</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:30:03 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] places_libres &lt;= MAX_PLACE</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:29:57 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place0.Occupe and place1.Occupe and place2.Occupe) imply places_libres == 0</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:31:49 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; personne3.Refus</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:21:29 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (places_libres == 0) imply (porte_ouverte == false or porte.Ouvert)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:33:02 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (place0.Occupe and place1.Occupe and place2.Occupe)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:33:47 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (place0.Libre and place1.Libre and place2.Libre)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:34:06 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; place0.Notification_Envoie</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:34:23 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place1.Notification_Envoie and place1.temps_attente == 0) imply  place1.temps_stationnement &gt;= DUREE_STATIONNEMENT</formula>
+			<comment>c a d notification est toujours envoyee exactement à 60 unités</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:46:49 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; depannage1.Intervention </formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:19:40 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; depannage2.Intervention</formula>
+			<comment>c poir déterminer le temps minimum necessaire pour declencher un service de depannage depuis l occupation initiale d une place</comment>
+			<option key="--diagnostic" value="2"/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:24:23 +0100">
+				<option key="--diagnostic" value="2"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place2.temps_attente &lt; DUREE_ATTENTE) imply not place2.Depannage</formula>
+			<comment>depannage ne se declenche jamais avant 15 unités d'attente</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:48:44 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place0.Occupe and place0.temps_stationnement &gt; DUREE_STATIONNEMENT)  imply place0.Notification_Envoie </formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:36:23 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] place0.Occupe imply place0.temps_stationnement &lt;= DUREE_STATIONNEMENT</formula>
+			<comment>c pour verifier qu apres une prolongation, le temps de stationnement est réinitialisé</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:44:07 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place0.Occupe imply place0.temps_stationnement &lt;= DUREE_STATIONNEMENT)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:35:12 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place0.Notification_Envoie imply place0.temps_attente &lt;= DUREE_ATTENTE)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:35:52 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place0.Occupe and place0.temps_stationnement == 0) imply (exists(i:int[0,MAX_PERSONNE-1]) place_personne[0] == i)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:41:38 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] place0.Occupe imply place0.temps_stationnement &gt;= 0</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:42:20 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place2.Occupe imply place2.temps_stationnement &lt;= DUREE_STATIONNEMENT) and (place2.Notification_Envoie imply place2.temps_attente &lt;= DUREE_ATTENTE)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:51:44 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>A[] (place0.Occupe and place1.Occupe) imply  (place0.temps_stationnement &gt;= 0 and place1.temps_stationnement &gt;= 0)</formula>
+			<comment>si 2 places sont occupées ==&gt; leurs horloges sont indépendantes</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:54:15 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (place0.Notification_Envoie and place1.Notification_Envoie)</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:54:54 +0100">
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (place0.Occupe and place1.Occupe and place2.Occupe)</formula>
+			<comment>il existe un chemin où toutes les places ont des temps différents</comment>
+			<result outcome="success" type="quality" timestamp="2025-12-01 15:55:09 +0100">
 			</result>
 		</query>
 	</queries>
